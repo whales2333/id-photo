@@ -1,0 +1,35 @@
+.vertical-text-menu-item {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  height: 60px !important;
+
+  > .ant-menu-item-icon {
+    height: 16px !important;
+    line-height: 16px !important;
+  }
+
+  > .ant-menu-title-content {
+    opacity: 1 !important;
+    font-size: 11px !important;
+    line-height: initial !important;
+    margin: 8px 0 0 !important;
+    height: auto !important;
+  }
+}
+
+.menulist-with-text {
+  height: 100%;
+
+  &.ant-menu-vertical {
+    > .ant-menu-item {
+      .vertical-text-menu-item();
+    }
+
+    > .ant-menu-submenu > .ant-menu-submenu-title {
+      .vertical-text-menu-item();
+    }
+  }
+}

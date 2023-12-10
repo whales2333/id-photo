@@ -1,0 +1,131 @@
+.topbar-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px !important;
+  width: 100%;
+
+  background: rgba(43, 54, 62, 0.5);
+  backdrop-filter: blur(4px);
+
+  height: 89px;
+  z-index: 1;
+  position: sticky;
+  top: 0;
+
+  .topbar-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .logo {
+      width: 46.343px;
+      height: 41.149px;
+      margin-right: 9.36px;
+      background: url('@/assets/img/logo.svg');
+    }
+    .Logomark {
+      width: 204.34px;
+      height: 21.921px;
+    }
+    margin-left: 162px;
+  }
+  .topbar-menu {
+    display: none;
+  }
+  .topbar-right {
+    margin-right: 162px;
+    text-align: center;
+    font-family: Circular Std;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 28px; /* 175% */
+    text-transform: uppercase;
+    color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 36px;
+    .item {
+      color: #ffffff;
+
+      &.activity {
+        color: #00d193;
+      }
+    }
+  }
+  .flex {
+    flex: auto;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .topbar-header {
+    display: flex;
+    width: 100%;
+    padding: 10px 16px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    border-bottom: 1px solid;
+    border-image: linear-gradient(90deg, #00d193 0%, #20aff3 100%);
+    border-image-slice: 1;
+    height: 55px;
+    z-index: 2;
+    .topbar-left {
+      background-color: #00d193;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      .logo {
+        width: 22.884px;
+        height: 20.319px;
+        // mix-blend-mode: screen;
+        margin: 0;
+        background: url('@/assets/img/logo-mini.svg') no-repeat;
+      }
+      .Logomark {
+        display: none;
+      }
+    }
+    .topbar-menu {
+      cursor: pointer;
+      transition: all 500ms;
+      &:hover {
+        transform: scale(1.1);
+      }
+      display: block;
+      width: 24px;
+      height: 24px;
+      background: url('@/assets/img/menu.svg') no-repeat;
+      &.show{
+        transform: rotate(90deg);
+      }
+    }
+    .topbar-right {
+      transform: translateX(100vh);
+      position: fixed;
+      left: 0;
+      top: 55px;
+      flex-direction: column;
+      width: 100vw;
+      height:calc( 100vh - 55px);
+      background-color: #000;
+      color: #fff;
+      justify-content: flex-start;
+      gap: 30px;
+      padding-top: 5vh;
+      overflow: auto;
+      transition: all 500ms;
+
+      &.show{
+        transform: translateX(0);
+      }
+    }
+  }
+}
