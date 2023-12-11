@@ -8,8 +8,9 @@ import { setGlobalSetting, Setting } from './store/setting';
 
 const Home = lazy(() => import('@/pages/home'));
 const Operation = lazy(() => import('@/pages/operation'));
-const Success = lazy(() => import('@/pages/home'));
-const Fail = lazy(() => import('@/pages/home'));
+const Success = lazy(() => import('@/pages/success'));
+const Fail = lazy(() => import('@/pages/success'));
+const Mail = lazy(() => import('@/pages/mail'));
 
 // @ts-ignore
 // eslint-disable-next-line no-underscore-dangle
@@ -29,6 +30,7 @@ export default () => {
         <Switch>
           <Route path='/fail' component={Fail} />
           <Route path='/success' component={Success} />
+          <Route path='/mail' component={Mail} />
           <Route path='/operation' component={Operation} />
           <Route path='/' component={Home} />
         </Switch>
