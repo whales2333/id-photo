@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable no-bitwise */
 export function dateToString(v: Date | number, f: string = 'yyyy-MM-dd hh:mm:ss') {
   let value = v;
@@ -79,4 +80,24 @@ export function hashCode(str: string) {
     hash |= 0; // Convert to 32bit integer
   }
   return hash;
+}
+
+export function uploadImgToBase64(file: Blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader(); // html5提供的一种异步文件读取机制
+    reader.readAsDataURL(file); // 将文件读取为Base64编码的数据URL
+    reader.onload = function () {
+      // 图片转base64完成后返回reader对象
+      resolve(reader);
+    };
+    reader.onerror = reject;
+  });
+}
+
+export function getUuid() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 }
