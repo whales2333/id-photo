@@ -100,8 +100,22 @@
         border: 1.5px solid var(--Yellow, #f2c94c);
         background: lightgray;
         position: relative;
-        // cursor: pointer;
+        overflow: hidden;
+        cursor: pointer;
+        &::before {
+          content: '';
+          width: 1500px;
+          height: 1500px;
+          background-image: url('Src/assets/img/logo.svg'); /* 水印图片的URL */
+          background-repeat: repeat; /* 重复水印图片 */
+          opacity: 0.085; /* 设置水印透明度 */
+          pointer-events: none; /* 防止水印干扰用户交互 */
+          z-index: 10;
+          position: absolute;
+          transform: translate(-50%, -50%) rotate(-45deg);
+        }
       }
+
       .g1 {
         position: absolute;
         top: -64px;

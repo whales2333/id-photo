@@ -1,22 +1,49 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-shadow */
-import { message, Spin, Upload, Image } from 'antd';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
-import { useEffect, useState } from 'react';
-import Header from '../home/header';
+import { message, Spin, Upload, Image, Modal } from 'antd';
+import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { useState } from 'react';
+
+import { useLocalStorageState } from 'ahooks';
+import { useHistory } from 'react-router-dom';
 
 import './index.less';
+import { ExclamationCircleFilled } from '@ant-design/icons';
 import { getUuid, uploadImgToBase64 } from '@/utils/common';
+import Header from '../home/header';
+
+function saveBase64Image(base64String: string | undefined, fileName: string) {
+  const link: any = document.createElement('a');
+  link.href = base64String;
+  link.download = fileName;
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
 const size = [384, 384];
 export default () => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const uid = searchParams.get('u');
+  const navigate = useHistory();
+
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [succesFalg, setSuccesFalg] = useState(false);
   const [failFalg, setFailFalg] = useState(false);
   const [errInfo, setErrInfo] = useState('');
-  const [imgSrc, setImgSrc] = useState('');
-  const [uuid, setuuid] = useState('');
+  const [imgSrc, setImgSrc] = useLocalStorageState<string | undefined>('use-local-storage-state-img', {
+    defaultValue: '',
+  });
+  const [uuid, setuuid] = useLocalStorageState<string | undefined>('use-local-storage-state-uid', {
+    defaultValue: '',
+  });
+  const [fileType, setfileType] = useLocalStorageState<string | undefined>('use-local-storage-filetype', {
+    defaultValue: '',
+  });
+
+  const isPayed = uid === uuid;
 
   const genateUid = () => {
     const id = getUuid();
@@ -24,52 +51,42 @@ export default () => {
     return id;
   };
 
-  const goOrder = () => {
-    const requestOptions = {
-      method: 'POST',
-    };
-    setUploading(true);
-    // You can use any AJAX library you like
-    // fetch('https://1306602019-2aqc0ebwde-use.scf.tencentcs.com', requestOptions)
-    fetch(`http://localhost:4242/create-checkout-session?id=${uuid}`, requestOptions)
-      .then((res) => res.json())
-      .then((res) => {
-      })
-      .catch(() => {
-        message.error('upload failed.');
-      })
-      .finally(() => {
-        setUploading(false);
-      });
-  };
   const handleUpload = (result: string) => {
     const id = genateUid();
     console.log('----id', id);
 
     const myHeaders = new Headers();
-    myHeaders.append('Authentication', 'hhyx-id-photo-create');
     myHeaders.append('Content-Type', 'application/json');
 
     const paramsStr = result.split(',')[1];
-    const paramsImgType = result.split(',')[0];
+    const paramsImgType: any = result.split(',')[0];
+    if (paramsImgType) {
+      const fileType = paramsImgType.match(/^data:(.*);/)[1].split('/')[1];
+      console.log('::fileType', fileType);
+      setfileType(fileType);
+    }
 
-    const raw = JSON.stringify({
+    const raw: any = {
       imgStr: paramsStr,
       height: size[1],
       width: size[0],
       beauty: true,
-    });
+    };
 
-    const requestOptions:any = {
+    const requestOptions: any = {
       method: 'POST',
       headers: myHeaders,
-      body: raw,
+      body: JSON.stringify({
+        params: raw,
+        id,
+        fileType: paramsImgType,
+      }),
       redirect: 'follow',
     };
     setUploading(true);
     // You can use any AJAX library you like
-    // fetch('https://1306602019-2aqc0ebwde-use.scf.tencentcs.com', requestOptions)
-    fetch('/upload', requestOptions)
+    // fetch('/photo/upload', requestOptions)
+      fetch('/upload', requestOptions)
       .then((res) => res.json())
       .then((res) => {
         const { code, data, message } = res;
@@ -111,7 +128,39 @@ export default () => {
     showUploadList: false,
   };
 
-  const handlerOnOrder = () => {};
+  const handlerOnOrder = () => {
+    if (isPayed) {
+      saveBase64Image(imgSrc, `${Date.now()}.${fileType}`);
+      return false;
+    }
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    const requestOptions: any = {
+      headers: myHeaders,
+      method: 'POST',
+      body: JSON.stringify({
+        id: uuid,
+        reUrl: window.location.href,
+      }),
+      redirect: 'follow',
+    };
+    // fetch('/photo/create-checkout-session', requestOptions)
+      fetch('/create-checkout-session', requestOptions)
+      .then((res) => res.json())
+      .then((res) => {
+        const { code, data, message } = res;
+        console.log(':res', res);
+        if (code === 0) {
+          window.location.href = data.url;
+        } else {
+          message.error('handlerOnOrder failed.2');
+        }
+      })
+      .catch(() => {
+        message.error('handlerOnOrder failed.');
+      })
+      .finally(() => {});
+  };
 
   const RenderSatus = () => {
     if (uploading) {
@@ -168,6 +217,19 @@ export default () => {
       </div>
     );
   };
+
+  const reUpdate = () => {
+    Modal.confirm({
+      title: 'Upload a new image?',
+      icon: <ExclamationCircleFilled />,
+      onOk: () => {
+        setImgSrc('');
+        setuuid('');
+        navigate.replace(`/operation`); // hooks
+      },
+    });
+  };
+
   return (
     <div className='operation'>
       <Header />
@@ -176,8 +238,8 @@ export default () => {
           <>
             <div className='operation-contet-preview'>
               <div className='img'>
-                <Image width={384} height={384} preview={false} src={imgSrc} />;
-                <div className='g1'>
+                <Image onClick={reUpdate} width={384} height={384} preview={false} src={imgSrc} />;
+                {/* <div className='g1'>
                   <span>2 inch</span>
                   <svg xmlns='http://www.w3.org/2000/svg' width='386' height='8' viewBox='0 0 386 8' fill='none'>
                     <path
@@ -186,8 +248,8 @@ export default () => {
                     />
                   </svg>
                 </div>
-                <div className='g2'></div>
-                <div className='g3'></div>
+                <div className='g2' />
+                <div className='g3' />
                 <div className='l1'>
                   <svg xmlns='http://www.w3.org/2000/svg' width='8' height='386' viewBox='0 0 8 386' fill='none'>
                     <path
@@ -205,10 +267,9 @@ export default () => {
                       fill='#333333'
                     />
                   </svg>
-                </div>
+                </div> */}
               </div>
-
-              <div className='btn' onClick={goOrder}>
+              <div className='btn' onClick={handlerOnOrder}>
                 <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
                   <path
                     d='M13.7149 4.99944L10.2864 4.99944C9.81494 4.99944 9.42923 5.38516 9.42923 5.85659L9.42923 10.1423L8.06637 10.1423C7.30351 10.1423 6.9178 11.068 7.4578 11.608L11.3921 15.5423C11.4714 15.6218 11.5656 15.6848 11.6693 15.7278C11.773 15.7708 11.8841 15.793 11.9964 15.793C12.1086 15.793 12.2198 15.7708 12.3235 15.7278C12.4272 15.6848 12.5214 15.6218 12.6007 15.5423L16.5349 11.608C17.0749 11.068 16.6978 10.1423 15.9349 10.1423L14.5721 10.1423L14.5721 5.85659C14.5721 5.38516 14.1864 4.99944 13.7149 4.99944Z'
@@ -219,7 +280,7 @@ export default () => {
                     fill='white'
                   />
                 </svg>
-                Download without watermark
+                {!isPayed ? 'Download without watermark' : 'Download'}
               </div>
             </div>
 

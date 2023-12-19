@@ -34,13 +34,12 @@ export default defineConfig((env) => ({
           return path.replace(/\/signup/, '');
         },
       },
-      '/upload': {
-        // target: 'http://localhost:5000/signup',
-        target: 'https://1306602019-2aqc0ebwde-use.scf.tencentcs.com/',
-        changeOrigin: true,
+      '/photo': {
+        target: 'http://localhost:4242',
         rewrite: (path) => {
-          return path.replace(/\/upload/, '');
+          return path.replace(/\/photo/, '');
         },
+        changeOrigin: true,
       },
     },
   },
