@@ -86,7 +86,8 @@ export default () => {
     setUploading(true);
     // You can use any AJAX library you like
     // fetch('/photo/upload', requestOptions)
-      fetch('/upload', requestOptions)
+    // fetch('/upload', requestOptions)
+    fetch('https://subscribe.network3.io/photo/upload', requestOptions)
       .then((res) => res.json())
       .then((res) => {
         const { code, data, message } = res;
@@ -145,7 +146,8 @@ export default () => {
       redirect: 'follow',
     };
     // fetch('/photo/create-checkout-session', requestOptions)
-      fetch('/create-checkout-session', requestOptions)
+    // fetch('/create-checkout-session', requestOptions)
+    fetch('https://subscribe.network3.io/photo/create-checkout-session', requestOptions)
       .then((res) => res.json())
       .then((res) => {
         const { code, data, message } = res;
