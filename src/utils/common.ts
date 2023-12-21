@@ -1,3 +1,4 @@
+
 /* eslint-disable func-names */
 /* eslint-disable no-bitwise */
 export function dateToString(v: Date | number, f: string = 'yyyy-MM-dd hh:mm:ss') {

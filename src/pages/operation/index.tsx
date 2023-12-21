@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-shadow */
-import { message, Spin, Upload, Image, Modal } from 'antd';
+import { message, Spin, Upload, Image, Modal, Space } from 'antd';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { useState } from 'react';
 
@@ -10,6 +10,8 @@ import { useHistory } from 'react-router-dom';
 import './index.less';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { getUuid, uploadImgToBase64 } from '@/utils/common';
+import imageCompression from 'browser-image-compression';
+
 import Header from '../home/header';
 
 function saveBase64Image(base64String: string | undefined, fileName: string) {
@@ -86,7 +88,6 @@ export default () => {
     setUploading(true);
     // You can use any AJAX library you like
     // fetch('/photo/upload', requestOptions)
-    // fetch('/upload', requestOptions)
     fetch('https://subscribe.network3.io/photo/upload', requestOptions)
       .then((res) => res.json())
       .then((res) => {
@@ -118,15 +119,30 @@ export default () => {
       setImgSrc('');
     },
     beforeUpload: async (file) => {
-      const { result }: any = await uploadImgToBase64(file);
+      const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1500,
+        useWebWorker: true,
+        fileType: 'image/jpeg',
+      };
+      try {
+        const compressedFile = await imageCompression(file, options);
+        console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+        console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+        const { result }: any = await uploadImgToBase64(compressedFile);
 
-      handleUpload(result);
-      // setImgSrc(result);
-      setFileList([file]);
+        handleUpload(result);
+        // setImgSrc(result);
+        setFileList([file]);
+      } catch (error) {
+        console.log(error);
+      }
+
       return false;
     },
     fileList,
     showUploadList: false,
+    accept: 'image/*',
   };
 
   const handlerOnOrder = () => {
@@ -146,7 +162,6 @@ export default () => {
       redirect: 'follow',
     };
     // fetch('/photo/create-checkout-session', requestOptions)
-    // fetch('/create-checkout-session', requestOptions)
     fetch('https://subscribe.network3.io/photo/create-checkout-session', requestOptions)
       .then((res) => res.json())
       .then((res) => {
@@ -224,6 +239,8 @@ export default () => {
     Modal.confirm({
       title: 'Upload a new image?',
       icon: <ExclamationCircleFilled />,
+      cancelText: 'cancel',
+      okText: 'ok',
       onOk: () => {
         setImgSrc('');
         setuuid('');
@@ -239,8 +256,8 @@ export default () => {
         {imgSrc ? (
           <>
             <div className='operation-contet-preview'>
-              <div className='img'>
-                <Image onClick={reUpdate} width={384} height={384} preview={false} src={imgSrc} />;
+              <div className={`img ${isPayed ? '' : 'mask'}`}>
+                <Image onClick={reUpdate} width={384} height={384} preview={false} src={imgSrc} />
                 {/* <div className='g1'>
                   <span>2 inch</span>
                   <svg xmlns='http://www.w3.org/2000/svg' width='386' height='8' viewBox='0 0 386 8' fill='none'>
@@ -271,18 +288,21 @@ export default () => {
                   </svg>
                 </div> */}
               </div>
-              <div className='btn' onClick={handlerOnOrder}>
-                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                  <path
-                    d='M13.7149 4.99944L10.2864 4.99944C9.81494 4.99944 9.42923 5.38516 9.42923 5.85659L9.42923 10.1423L8.06637 10.1423C7.30351 10.1423 6.9178 11.068 7.4578 11.608L11.3921 15.5423C11.4714 15.6218 11.5656 15.6848 11.6693 15.7278C11.773 15.7708 11.8841 15.793 11.9964 15.793C12.1086 15.793 12.2198 15.7708 12.3235 15.7278C12.4272 15.6848 12.5214 15.6218 12.6007 15.5423L16.5349 11.608C17.0749 11.068 16.6978 10.1423 15.9349 10.1423L14.5721 10.1423L14.5721 5.85659C14.5721 5.38516 14.1864 4.99944 13.7149 4.99944Z'
-                    fill='white'
-                  />
-                  <path
-                    d='M6.85714 18.5078L17.1429 18.5078C17.6143 18.5078 18 18.1221 18 17.6507C18 17.1792 17.6143 16.7935 17.1429 16.7935L6.85714 16.7935C6.38571 16.7935 6 17.1792 6 17.6507C6 18.1221 6.38571 18.5078 6.85714 18.5078Z'
-                    fill='white'
-                  />
-                </svg>
-                {!isPayed ? 'Download without watermark' : 'Download'}
+              <div className='btnG'>
+                <div onClick={handlerOnOrder}>
+                  <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
+                    <path
+                      d='M13.7149 4.99944L10.2864 4.99944C9.81494 4.99944 9.42923 5.38516 9.42923 5.85659L9.42923 10.1423L8.06637 10.1423C7.30351 10.1423 6.9178 11.068 7.4578 11.608L11.3921 15.5423C11.4714 15.6218 11.5656 15.6848 11.6693 15.7278C11.773 15.7708 11.8841 15.793 11.9964 15.793C12.1086 15.793 12.2198 15.7708 12.3235 15.7278C12.4272 15.6848 12.5214 15.6218 12.6007 15.5423L16.5349 11.608C17.0749 11.068 16.6978 10.1423 15.9349 10.1423L14.5721 10.1423L14.5721 5.85659C14.5721 5.38516 14.1864 4.99944 13.7149 4.99944Z'
+                      fill='white'
+                    />
+                    <path
+                      d='M6.85714 18.5078L17.1429 18.5078C17.6143 18.5078 18 18.1221 18 17.6507C18 17.1792 17.6143 16.7935 17.1429 16.7935L6.85714 16.7935C6.38571 16.7935 6 17.1792 6 17.6507C6 18.1221 6.38571 18.5078 6.85714 18.5078Z'
+                      fill='white'
+                    />
+                  </svg>
+                  {!isPayed ? 'Download without watermark' : 'Download'}
+                </div>
+                <div onClick={reUpdate}>Upload</div>
               </div>
             </div>
 

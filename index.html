@@ -2,19 +2,62 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>newtwork3</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
-    <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link href="//cdn-images.mailchimp.com/embedcode/classic-061523.css" rel="stylesheet" type="text/css" />
     <!-- <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/54fb07105f69ad561ec87f92f/e54d201994817e09680c38332.js");</script> -->
   </head>
   <body>
     <div id="mainapp-root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
+  <script>
+    // 1.禁用右键菜单
+    document.oncontextmenu = new Function('event.returnValue=false');
+    // 2.禁用鼠标选中
+    document.onselectstart = new Function('event.returnValue=false');
+
+    document.onkeydown = () => {
+      console.log(window.event.keyCode);
+
+      for (let i = 9; i < 47; i++) {
+        if (window.event && window.event.keyCode == i) {
+          return false;
+        }
+      }
+      for (let i = 58; i < 65; i++) {
+        if (window.event && window.event.keyCode == i) {
+          return false;
+        }
+      }
+      for (let i = 91; i < 300; i++) {
+        if (window.event && window.event.keyCode == i) {
+          return false;
+        }
+      }
+      // 禁用ctrl+shift+i
+      if (window.event.ctrlKey && window.event.shiftKey && window.event.keyCode == 73) {
+        return false;
+      }
+      if (window.event.shiftKey) {
+        return false;
+      }
+      // 禁用ctrl+r
+      if (window.event.ctrlKey && window.event.keyCode == 82) {
+        return false;
+      }
+    };
+  </script>
   <!-- <script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script><script type="text/javascript">(function($) {window.fnames = new Array(); window.ftypes = new Array();fnames[0]='EMAIL';ftypes[0]='email';fnames[1]='FNAME';ftypes[1]='text';fnames[2]='LNAME';ftypes[2]='text';fnames[3]='ADDRESS';ftypes[3]='address';fnames[4]='PHONE';ftypes[4]='phone';fnames[5]='BIRTHDAY';ftypes[5]='birthday';}(jQuery));var $mcj = jQuery.noConflict(true);</script></div> -->
+</html>

@@ -20,7 +20,7 @@ export default () => {
             Passport Photo!
           </div>
           <div>
-            Enjoy the ease of capturing the perfect passport photo from <br /> the comfort of your home. Just one
+            Enjoy the ease of capturing the perfect passport photo from the comfort of your home. Just one
             clickUpload Photo away.
           </div>
           <div className='btn' onClick={navTo}>
