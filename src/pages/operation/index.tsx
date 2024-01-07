@@ -120,7 +120,7 @@ export default () => {
     },
     beforeUpload: async (file) => {
       const options = {
-        maxSizeMB: 0.5,
+        maxSizeMB: 0.2,
         maxWidthOrHeight: 1500,
         useWebWorker: true,
         fileType: 'image/jpeg',
@@ -243,6 +243,8 @@ export default () => {
       okText: 'ok',
       onOk: () => {
         setImgSrc('');
+        setSuccesFalg(false);
+        setFailFalg(false);
         setuuid('');
         navigate.replace(`/operation`); // hooks
       },
