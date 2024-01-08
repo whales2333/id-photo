@@ -1,0 +1,122 @@
+.start {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  &-contet {
+    display: grid;
+    grid-template-columns: 588px 588px;
+    grid-template-rows: 320px;
+    justify-content: center;
+    align-content: center;
+
+    gap: 24px;
+    flex: 1;
+    & .item{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      cursor: pointer;
+      transform: translateY(-50px);
+
+      &:nth-child(1) {
+        border-radius: 12px;
+        background: var(--base-white, #fff);
+        box-shadow: 4px 4px 60px 0px rgba(0, 0, 0, 0.1);
+      }
+      &:nth-child(2) {
+        border-radius: 12px;
+        background: var(--Feature-BG, rgba(99, 91, 255, 0.04));
+      }
+
+      & > div:nth-child(1) {
+        width: 60px;
+        height: 60px;
+        border-radius: 3px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        &.upload {
+          background: var(--primary---purple, #635bff);
+        }
+      }
+      & > div:nth-child(2) {
+        color: var(--Text-Primary, #12141d);
+        text-align: center;
+        font-variant-numeric: lining-nums proportional-nums;
+
+        /* Stripe Apps Typography/Heading */
+        font-family: SF Pro Text;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 24px; /* 150% */
+        letter-spacing: -0.4px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .start {
+    &-contet {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      flex: 1;
+      & .item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 226px;
+        height: 205px;
+        flex-shrink: 0;
+
+        cursor: pointer;
+        transform: translateY(-50px);
+
+        &:nth-child(1) {
+          border-radius: 12px;
+          background: var(--base-white, #fff);
+          box-shadow: 4px 4px 60px 0px rgba(0, 0, 0, 0.1);
+        }
+        &:nth-child(2) {
+          border-radius: 12px;
+          background: var(--Feature-BG, rgba(99, 91, 255, 0.04));
+        }
+
+        & > div:nth-child(1) {
+          width: 32px;
+          height: 32px;
+          border-radius: 3px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          &.upload {
+            background: var(--primary---purple, #635bff);
+          }
+        }
+        & > div:nth-child(2) {
+          color: var(--Text-Primary, #12141D);
+          text-align: center;
+          font-variant-numeric: lining-nums proportional-nums;
+          font-family: SF Pro Text;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 24px; /* 171.429% */
+          letter-spacing: -0.4px;
+        }
+      }
+    }
+  }
+}

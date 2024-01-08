@@ -5,7 +5,7 @@ import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { useEffect, useState } from 'react';
 
 import { useLocalStorageState } from 'ahooks';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import './index.less';
 import { ExclamationCircleFilled } from '@ant-design/icons';
@@ -30,6 +30,10 @@ const size = [384, 384];
 const baseUrl = '';
 
 export default () => {
+  const location: any = useLocation();
+
+  console.log('::location', location);
+
   const searchParams = new URLSearchParams(window.location.search);
   const uid = searchParams.get('u');
   const [session, setsession] = useLocalStorageState<string | undefined>('use-local-storage-state-session', {
@@ -123,33 +127,35 @@ export default () => {
       });
   };
 
+  const beforeUpload = async (file) => {
+    const options = {
+      maxSizeMB: 0.2,
+      maxWidthOrHeight: 1500,
+      useWebWorker: true,
+      fileType: 'image/jpeg',
+    };
+    try {
+      const compressedFile = await imageCompression(file, options);
+      console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
+      console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
+      const { result }: any = await uploadImgToBase64(compressedFile);
+
+      handleUpload(result);
+      // setImgSrc(result);
+      setFileList([file]);
+    } catch (error) {
+      console.log(error);
+    }
+
+    return false;
+  };
+
   const props: UploadProps = {
-    onRemove: (file) => {
+    onRemove: () => {
       setFileList([]);
       setImgSrc('');
     },
-    beforeUpload: async (file) => {
-      const options = {
-        maxSizeMB: 0.2,
-        maxWidthOrHeight: 1500,
-        useWebWorker: true,
-        fileType: 'image/jpeg',
-      };
-      try {
-        const compressedFile = await imageCompression(file, options);
-        console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-        console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-        const { result }: any = await uploadImgToBase64(compressedFile);
-
-        handleUpload(result);
-        // setImgSrc(result);
-        setFileList([file]);
-      } catch (error) {
-        console.log(error);
-      }
-
-      return false;
-    },
+    beforeUpload,
     fileList,
     showUploadList: false,
     accept: 'image/*',
@@ -278,6 +284,22 @@ export default () => {
     );
   };
 
+  const clear = () => {
+    setImgSrc('');
+    setSuccesFalg(false);
+    setFailFalg(false);
+    setuuid('');
+    setpaiedInfo(null);
+    setsession('');
+  };
+
+  useEffect(() => {
+    if (location.state?.file) {
+      clear();
+      beforeUpload(location.state?.file);
+    }
+  }, [location.state]);
+
   const reUpdate = () => {
     Modal.confirm({
       title: 'Upload a new image?',
@@ -285,12 +307,7 @@ export default () => {
       cancelText: 'cancel',
       okText: 'ok',
       onOk: () => {
-        setImgSrc('');
-        setSuccesFalg(false);
-        setFailFalg(false);
-        setuuid('');
-        setpaiedInfo(null)
-        setsession('')
+        clear();
         navigate.replace(`/operation`); // hooks
       },
     });

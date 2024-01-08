@@ -11,6 +11,7 @@ const Operation = lazy(() => import('@/pages/operation'));
 const Success = lazy(() => import('@/pages/success'));
 const Fail = lazy(() => import('@/pages/success'));
 const Mail = lazy(() => import('@/pages/mail'));
+const Start = lazy(() => import('@/pages/start'));
 
 // @ts-ignore
 // eslint-disable-next-line no-underscore-dangle
@@ -32,6 +33,7 @@ export default () => {
           <Route path='/success' component={Success} />
           <Route path='/mail' component={Mail} />
           <Route path='/operation' component={Operation} />
+          <Route path='/start' component={Start} />
           <Route path='/' component={Home} />
         </Switch>
       </Suspense>

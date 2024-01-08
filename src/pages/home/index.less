@@ -3,8 +3,9 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  height: 100vh;
+  height: 100dvh;
   min-width: 900px;
+  min-height: 750px;
   &-top {
     height: 100px;
     display: flex;
@@ -12,14 +13,15 @@
     align-items: center;
     justify-content: flex-start;
     margin: 0 auto;
-    padding: 0 200px;
+    padding: 0 80px;
     width: 100%;
     max-width: 1920px;
+    cursor: pointer;
   }
   &-contet {
     flex: 1;
     display: grid;
-    grid-template-columns: 490px 490px;
+    grid-template-columns: 440px 515px;
     align-items: center;
     justify-content: center;
     gap: 122px;
@@ -34,24 +36,23 @@
     }
     &-des {
       & > div:nth-child(1) {
-        color: #12141d;
-        /* heading 1 */
-        font-family: Inter;
-        font-size: 64px;
+        color: #12141D;
+        font-variant-numeric: lining-nums tabular-nums;
+        font-family: SF Pro Display;
+        font-size: 40px;
         font-style: normal;
-        font-weight: 700;
+        font-weight: 600;
         line-height: normal;
-        letter-spacing: -1px;
       }
       & > div:nth-child(2) {
-        color: var(--Text-Secondary, #6f7075);
+        color: var(--Text-Secondary, #6F7075);
 
-        /* Body Large */
-        font-family: Inter;
-        font-size: 20px;
+        /* Stripe Apps Typography/Body */
+        font-family: SF Pro Text;
+        font-size: 14px;
         font-style: normal;
         font-weight: 400;
-        line-height: 140%; /* 28px */
+        line-height: 20px; /* 142.857% */
         margin: 20px 0 40px;
       }
     }
@@ -59,7 +60,7 @@
       position: absolute;
       bottom: 0;
       left: 0;
-      height: 100px;
+      height: 190px;
       width: 100%;
       .bg {
         width: 100%;
@@ -69,21 +70,10 @@
         z-index: 2;
         position: relative;
       }
-      .slite {
-        position: absolute;
-        bottom: -91px;
-        left: 8vw;
-        width: 453px;
-        height: 241.984px;
-        flex-shrink: 0;
-        background: url('@/assets/img/ic_path.svg') no-repeat;
-        z-index: 1;
-        background-size: cover;
-      }
     }
   }
   footer {
-    padding: 30px 0 50px 0;
+    padding: 30px 0 54px 0;
     text-align: center;
     width: 100%;
     color: var(--Text-Secondary, #6f7075);
@@ -96,30 +86,29 @@
   }
 
   .btn {
-    display: flex;
-    width: 320px;
-    padding: 16px 20px;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: all 300ms;
-    &:hover {
-      transform: scale(1.15);
-    }
-
-    border-radius: 4px;
-    background: #000;
-    color: #fff;
-    text-align: right;
-
-    /* Button */
-    font-family: Inter;
+    color: var(--text-icons-white, #fff);
+    text-align: center;
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: SF Pro Text;
     font-size: 16px;
     font-style: normal;
     font-weight: 600;
     line-height: 24px; /* 150% */
+    letter-spacing: -0.31px;
+
+    display: flex;
+    height: 40px;
+    padding: 8px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    background: #635bff;
+    width: fit-content;
+    cursor: pointer;
+
+    /* [Deprecated] Button/Default */
+    box-shadow: 0px 2px 5px 0px rgba(60, 66, 87, 0.08), 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -127,14 +116,15 @@
   .home {
     background-color: #fff;
     min-width: 0;
+    min-height: 400px;
     &-top {
-      height: 100px;
+      height: 50px;
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
       margin: 0 auto;
-      padding: 0 16px;
+      padding: 16px 20px;
       width: 100%;
     }
     &-contet {
@@ -148,44 +138,57 @@
       // overflow: hidden;
       padding-bottom: 0;
       &-bg {
-        width: 420px;
-        height: 315px;
+        width: 241px;
+        height: 180px;
         background: url('@/assets/img/bg1.gif') no-repeat;
         background-size: contain;
         background-position: center;
+        flex-shrink: 0;
       }
       &-des {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding: 0 16px;
         & > div:nth-child(1) {
-          color: #12141d;
+          color: #12141D;
           text-align: center;
-
-          /* heading 2 */
-          font-family: Inter;
-          font-size: 48px;
+          font-variant-numeric: lining-nums tabular-nums;
+          font-family: SF Pro Display;
+          font-size: 32px;
           font-style: normal;
-          font-weight: 700;
+          font-weight: 600;
           line-height: normal;
-          letter-spacing: -1px;
         }
         & > div:nth-child(2) {
-          color: var(--Text-Secondary, #6f7075);
+          color: var(--Text-Secondary, #6F7075);
           text-align: center;
 
-          /* Body Large */
-          font-family: Inter;
-          font-size: 20px;
+          /* Stripe Apps Typography/Body */
+          font-family: SF Pro Text;
+          font-size: 14px;
           font-style: normal;
           font-weight: 400;
-          line-height: 140%; /* 28px */
+          line-height: 20px; /* 142.857% */
         }
       }
       &-path {
         display: none;
       }
+    }
+    footer {
+      padding: 0 0 20px 0;
+      color: var(--Hint, #ACACAC);
+      text-align: center;
+
+      /* Stripe Apps Typography/Caption */
+      font-family: SF Pro Text;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 16px; /* 133.333% */
+
     }
   }
 }
