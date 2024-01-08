@@ -2,15 +2,15 @@
 /* eslint-disable no-shadow */
 import { message, Spin, Upload, Image, Modal, Space } from 'antd';
 import type { UploadFile, UploadProps } from 'antd/es/upload/interface';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useLocalStorageState } from 'ahooks';
 import { useHistory } from 'react-router-dom';
 
 import './index.less';
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import { getUuid, uploadImgToBase64 } from '@/utils/common';
 import imageCompression from 'browser-image-compression';
+import { getUuid, uploadImgToBase64 } from '@/utils/common';
 
 import Header from '../home/header';
 
@@ -25,9 +25,19 @@ function saveBase64Image(base64String: string | undefined, fileName: string) {
 }
 
 const size = [384, 384];
+
+// const baseUrl='https://subscribe.network3.io';
+const baseUrl = '';
+
 export default () => {
   const searchParams = new URLSearchParams(window.location.search);
   const uid = searchParams.get('u');
+  const [session, setsession] = useLocalStorageState<string | undefined>('use-local-storage-state-session', {
+    defaultValue: '',
+  });
+  const [sessionLoading, setsessionLoading] = useState(false);
+  const [paiedInfo, setpaiedInfo] = useState(null);
+
   const navigate = useHistory();
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
@@ -88,7 +98,7 @@ export default () => {
     setUploading(true);
     // You can use any AJAX library you like
     // fetch('/photo/upload', requestOptions)
-    fetch('https://subscribe.network3.io/photo/upload', requestOptions)
+    fetch(`${baseUrl}/photo/upload`, requestOptions)
       .then((res) => res.json())
       .then((res) => {
         const { code, data, message } = res;
@@ -162,12 +172,13 @@ export default () => {
       redirect: 'follow',
     };
     // fetch('/photo/create-checkout-session', requestOptions)
-    fetch('https://subscribe.network3.io/photo/create-checkout-session', requestOptions)
+    fetch(`${baseUrl}/photo/create-checkout-session`, requestOptions)
       .then((res) => res.json())
       .then((res) => {
         const { code, data, message } = res;
         console.log(':res', res);
         if (code === 0) {
+          setsession(data.id);
           window.location.href = data.url;
         } else {
           message.error('handlerOnOrder failed.2');
@@ -177,6 +188,38 @@ export default () => {
         message.error('handlerOnOrder failed.');
       })
       .finally(() => {});
+  };
+
+  useEffect(() => {
+    if (session && isPayed) {
+      getPaiedInfo();
+    }
+  }, [session, isPayed]);
+
+  const getPaiedInfo = () => {
+    setsessionLoading(true);
+    const myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    const requestOptions: any = {
+      headers: myHeaders,
+      method: 'POST',
+      body: JSON.stringify({
+        session,
+      }),
+    };
+    fetch(`${baseUrl}/photo/get-checkout-session`, requestOptions)
+      .then((res) => res.json())
+      .then((res) => {
+        const { code, data, message } = res;
+        setpaiedInfo(res.data);
+        console.log(':getPaiedInfo res', res);
+      })
+      .catch(() => {
+        message.error('getPaiedInfo failed.');
+      })
+      .finally(() => {
+        setsessionLoading(false);
+      });
   };
 
   const RenderSatus = () => {
@@ -246,6 +289,8 @@ export default () => {
         setSuccesFalg(false);
         setFailFalg(false);
         setuuid('');
+        setpaiedInfo(null)
+        setsession('')
         navigate.replace(`/operation`); // hooks
       },
     });
@@ -254,6 +299,8 @@ export default () => {
   return (
     <div className='operation'>
       <Header />
+      {/* 邮箱信息 */}
+      {/* {paiedInfo?.customer_details?.email} */}
       <div className={`operation-contet  ${imgSrc ? 'operation-contet-col' : ''}`}>
         {imgSrc ? (
           <>
