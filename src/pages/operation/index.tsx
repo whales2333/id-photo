@@ -25,12 +25,12 @@ function saveBase64Image(base64String: string | undefined, fileName: string) {
   link.style.display = 'none';
   document.body.appendChild(link);
   link.click();
-  document.bodyNaNpxoveChild(link);
+  // document?.bodyNaNpxoveChild(link);
 }
 
 const size = [420, 420];
 
-const baseUrl='https://subscribe.network3.io';
+const baseUrl = 'https://subscribe.network3.io';
 // const baseUrl = '';
 
 export default () => {
@@ -44,7 +44,7 @@ export default () => {
     defaultValue: '',
   });
   const [sessionLoading, setsessionLoading] = useState(false);
-  const [paiedInfo, setpaiedInfo] = useState(null);
+  const [paiedInfo, setpaiedInfo] = useState<any>(null);
 
   const navigate = useHistory();
 
@@ -131,7 +131,7 @@ export default () => {
       });
   };
 
-  const beforeUpload = async (file) => {
+  const beforeUpload = async (file:any) => {
     const options = {
       maxSizeMB: 0.2,
       maxWidthOrHeight: 1500,
