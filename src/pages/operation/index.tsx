@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable camelcase */
 /* eslint-disable no-shadow */
 import { message, Spin, Upload, Image, Modal, Space } from 'antd';
@@ -14,6 +15,9 @@ import { getUuid, uploadImgToBase64 } from '@/utils/common';
 
 import Header from '../home/header';
 
+import ICON_ERROR from '@/assets/img/Frame 10789.png';
+import ICON_PAIED from '@/assets/img/Frame 10804.png';
+
 function saveBase64Image(base64String: string | undefined, fileName: string) {
   const link: any = document.createElement('a');
   link.href = base64String;
@@ -21,10 +25,10 @@ function saveBase64Image(base64String: string | undefined, fileName: string) {
   link.style.display = 'none';
   document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link);
+  document.bodyNaNpxoveChild(link);
 }
 
-const size = [384, 384];
+const size = [420, 420];
 
 // const baseUrl='https://subscribe.network3.io';
 const baseUrl = '';
@@ -302,7 +306,7 @@ export default () => {
 
   const reUpdate = () => {
     Modal.confirm({
-      title: 'Upload a new image?',
+      title: ' Re-upload?',
       icon: <ExclamationCircleFilled />,
       cancelText: 'cancel',
       okText: 'ok',
@@ -312,122 +316,188 @@ export default () => {
       },
     });
   };
+  if (uploading) {
+    return (
+      <div className='operation'>
+        <Header />
+        <div className={`operation-contet  loading`}>
+          <div className='icon'>
+            <div></div>
+            <div>Processing...</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
+  const Ctags = () => {
+    return (
+      <>
+        <div>
+          Photo Dimension: 2 inch x 2 inch
+          <svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'>
+            <path
+              fill-rule='evenodd'
+              clip-rule='evenodd'
+              d='M3.97308 9.90981L0.21967 6.19095C-0.0732233 5.89561 -0.0732233 5.41677 0.21967 5.12143C0.512563 4.82608 0.987437 4.82608 1.28033 5.12143L4.50051 8.2901L10.7167 2.09651C11.0095 1.80116 11.4844 1.80116 11.7773 2.09651C12.0702 2.39185 12.0702 2.87069 11.7773 3.16603L5.02456 9.90635C4.73368 10.1965 4.26583 10.1981 3.97308 9.90981Z'
+              fill='#006908'
+            />
+          </svg>
+        </div>
+        <div>
+          File Format: PNG
+          <svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'>
+            <path
+              fill-rule='evenodd'
+              clip-rule='evenodd'
+              d='M3.97308 9.90981L0.21967 6.19095C-0.0732233 5.89561 -0.0732233 5.41677 0.21967 5.12143C0.512563 4.82608 0.987437 4.82608 1.28033 5.12143L4.50051 8.2901L10.7167 2.09651C11.0095 1.80116 11.4844 1.80116 11.7773 2.09651C12.0702 2.39185 12.0702 2.87069 11.7773 3.16603L5.02456 9.90635C4.73368 10.1965 4.26583 10.1981 3.97308 9.90981Z'
+              fill='#006908'
+            />
+          </svg>
+        </div>
+        <div>
+          Head Proportion: 1.6 inch{' '}
+          <svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'>
+            <path
+              fill-rule='evenodd'
+              clip-rule='evenodd'
+              d='M3.97308 9.90981L0.21967 6.19095C-0.0732233 5.89561 -0.0732233 5.41677 0.21967 5.12143C0.512563 4.82608 0.987437 4.82608 1.28033 5.12143L4.50051 8.2901L10.7167 2.09651C11.0095 1.80116 11.4844 1.80116 11.7773 2.09651C12.0702 2.39185 12.0702 2.87069 11.7773 3.16603L5.02456 9.90635C4.73368 10.1965 4.26583 10.1981 3.97308 9.90981Z'
+              fill='#006908'
+            />
+          </svg>
+        </div>{' '}
+        <div>
+          Photo Size: 240 KB{' '}
+          <svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'>
+            <path
+              fill-rule='evenodd'
+              clip-rule='evenodd'
+              d='M3.97308 9.90981L0.21967 6.19095C-0.0732233 5.89561 -0.0732233 5.41677 0.21967 5.12143C0.512563 4.82608 0.987437 4.82608 1.28033 5.12143L4.50051 8.2901L10.7167 2.09651C11.0095 1.80116 11.4844 1.80116 11.7773 2.09651C12.0702 2.39185 12.0702 2.87069 11.7773 3.16603L5.02456 9.90635C4.73368 10.1965 4.26583 10.1981 3.97308 9.90981Z'
+              fill='#006908'
+            />
+          </svg>
+        </div>{' '}
+        <div>
+          File Resolution: 300 DPI
+          <svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'>
+            <path
+              fill-rule='evenodd'
+              clip-rule='evenodd'
+              d='M3.97308 9.90981L0.21967 6.19095C-0.0732233 5.89561 -0.0732233 5.41677 0.21967 5.12143C0.512563 4.82608 0.987437 4.82608 1.28033 5.12143L4.50051 8.2901L10.7167 2.09651C11.0095 1.80116 11.4844 1.80116 11.7773 2.09651C12.0702 2.39185 12.0702 2.87069 11.7773 3.16603L5.02456 9.90635C4.73368 10.1965 4.26583 10.1981 3.97308 9.90981Z'
+              fill='#006908'
+            />
+          </svg>
+        </div>{' '}
+        <div>
+          Background: Pure White
+          <svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'>
+            <path
+              fill-rule='evenodd'
+              clip-rule='evenodd'
+              d='M3.97308 9.90981L0.21967 6.19095C-0.0732233 5.89561 -0.0732233 5.41677 0.21967 5.12143C0.512563 4.82608 0.987437 4.82608 1.28033 5.12143L4.50051 8.2901L10.7167 2.09651C11.0095 1.80116 11.4844 1.80116 11.7773 2.09651C12.0702 2.39185 12.0702 2.87069 11.7773 3.16603L5.02456 9.90635C4.73368 10.1965 4.26583 10.1981 3.97308 9.90981Z'
+              fill='#006908'
+            />
+          </svg>
+        </div>
+      </>
+    );
+  };
+  const RenderTasg = () => {
+    return (
+      <div className='operation-contet-panel-info'>
+        <Ctags></Ctags>
+      </div>
+    );
+  };
+  const RenderTasgWidthPhone = () => {
+    return (
+      <div className='operation-contet-panel-infoSM'>
+        <Ctags></Ctags>
+      </div>
+    );
+  };
+
+  if (failFalg) {
+    return (
+      <div className='operation'>
+        <Header />
+        <div className={`operation-contet-error`}>
+          <div className={`operation-contet-error-wrap`}>
+            <div>{errInfo}</div>
+            <img src={ICON_ERROR} alt='paied' sizes='' />
+            <div className='redownload' onClick={reUpdate}>
+              Re-upload
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className='operation'>
       <Header />
       {/* 邮箱信息 */}
-      {/* {paiedInfo?.customer_details?.email} */}
+
       <div className={`operation-contet  ${imgSrc ? 'operation-contet-col' : ''}`}>
         {imgSrc ? (
           <>
             <div className='operation-contet-preview'>
               <div className={`img ${isPayed ? '' : 'mask'}`}>
-                <Image onClick={reUpdate} width={384} height={384} preview={false} src={imgSrc} />
-                {/* <div className='g1'>
-                  <span>2 inch</span>
-                  <svg xmlns='http://www.w3.org/2000/svg' width='386' height='8' viewBox='0 0 386 8' fill='none'>
-                    <path
-                      d='M0.646447 3.64648C0.451184 3.84174 0.451184 4.15832 0.646447 4.35358L3.82843 7.53556C4.02369 7.73083 4.34027 7.73083 4.53553 7.53556C4.7308 7.3403 4.7308 7.02372 4.53553 6.82846L1.70711 4.00003L4.53553 1.1716C4.7308 0.976341 4.7308 0.659758 4.53553 0.464496C4.34027 0.269234 4.02369 0.269234 3.82843 0.464496L0.646447 3.64648ZM385.354 4.35355C385.549 4.15829 385.549 3.84171 385.354 3.64644L382.172 0.464463C381.976 0.269201 381.66 0.269201 381.464 0.464463C381.269 0.659726 381.269 0.976308 381.464 1.17157L384.293 4L381.464 6.82842C381.269 7.02369 381.269 7.34027 381.464 7.53553C381.66 7.73079 381.976 7.73079 382.172 7.53553L385.354 4.35355ZM1 4.50003L385 4.5L385 3.5L1 3.50003L1 4.50003Z'
-                      fill='black'
-                    />
-                  </svg>
-                </div>
-                <div className='g2' />
-                <div className='g3' />
-                <div className='l1'>
-                  <svg xmlns='http://www.w3.org/2000/svg' width='8' height='386' viewBox='0 0 8 386' fill='none'>
-                    <path
-                      d='M4.35355 0.646447C4.15829 0.451184 3.84171 0.451184 3.64645 0.646447L0.464466 3.82843C0.269204 4.02369 0.269204 4.34027 0.464466 4.53553C0.659728 4.7308 0.976311 4.7308 1.17157 4.53553L4 1.70711L6.82843 4.53553C7.02369 4.7308 7.34027 4.7308 7.53553 4.53553C7.7308 4.34027 7.7308 4.02369 7.53553 3.82843L4.35355 0.646447ZM3.64643 385.354C3.84169 385.549 4.15827 385.549 4.35354 385.354L7.53552 382.172C7.73078 381.976 7.73078 381.66 7.53552 381.464C7.34026 381.269 7.02367 381.269 6.82841 381.464L3.99998 384.293L1.17156 381.464C0.976294 381.269 0.659712 381.269 0.464449 381.464C0.269187 381.66 0.269187 381.976 0.464449 382.172L3.64643 385.354ZM3.5 1L3.49998 385L4.49998 385L4.5 1L3.5 1Z'
-                      fill='black'
-                    />
-                  </svg>
-                  <span>2 inch</span>
-                </div>
-                <div className='l2'>
-                  <span>1.6 inch</span>
-                  <svg xmlns='http://www.w3.org/2000/svg' width='8' height='249' viewBox='0 0 8 249' fill='none'>
-                    <path
-                      d='M4.35355 0.646447C4.15829 0.451184 3.84171 0.451184 3.64645 0.646447L0.464466 3.82843C0.269204 4.02369 0.269204 4.34027 0.464466 4.53553C0.659728 4.7308 0.976311 4.7308 1.17157 4.53553L4 1.70711L6.82843 4.53553C7.02369 4.7308 7.34027 4.7308 7.53553 4.53553C7.7308 4.34027 7.7308 4.02369 7.53553 3.82843L4.35355 0.646447ZM3.64646 248.354C3.84172 248.549 4.1583 248.549 4.35356 248.354L7.53554 245.172C7.73081 244.976 7.73081 244.66 7.53554 244.464C7.34028 244.269 7.0237 244.269 6.82844 244.464L4.00001 247.293L1.17158 244.464C0.976321 244.269 0.659739 244.269 0.464477 244.464C0.269215 244.66 0.269215 244.976 0.464477 245.172L3.64646 248.354ZM3.5 1L3.50001 248L4.50001 248L4.5 1L3.5 1Z'
-                      fill='#333333'
-                    />
-                  </svg>
-                </div> */}
+                <Image onClick={reUpdate} width={420} height={420} preview={false} src={imgSrc} />
               </div>
-              <div className='btnG'>
-                <div onClick={handlerOnOrder}>
-                  <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                    <path
-                      d='M13.7149 4.99944L10.2864 4.99944C9.81494 4.99944 9.42923 5.38516 9.42923 5.85659L9.42923 10.1423L8.06637 10.1423C7.30351 10.1423 6.9178 11.068 7.4578 11.608L11.3921 15.5423C11.4714 15.6218 11.5656 15.6848 11.6693 15.7278C11.773 15.7708 11.8841 15.793 11.9964 15.793C12.1086 15.793 12.2198 15.7708 12.3235 15.7278C12.4272 15.6848 12.5214 15.6218 12.6007 15.5423L16.5349 11.608C17.0749 11.068 16.6978 10.1423 15.9349 10.1423L14.5721 10.1423L14.5721 5.85659C14.5721 5.38516 14.1864 4.99944 13.7149 4.99944Z'
-                      fill='white'
-                    />
-                    <path
-                      d='M6.85714 18.5078L17.1429 18.5078C17.6143 18.5078 18 18.1221 18 17.6507C18 17.1792 17.6143 16.7935 17.1429 16.7935L6.85714 16.7935C6.38571 16.7935 6 17.1792 6 17.6507C6 18.1221 6.38571 18.5078 6.85714 18.5078Z'
-                      fill='white'
-                    />
-                  </svg>
-                  {!isPayed ? 'Download without watermark' : 'Download'}
+              {isPayed && (
+                <div className='operation-contet-preview-btn'>
+                  <div className='download' onClick={handlerOnOrder}>
+                    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'>
+                      <path
+                        fill-rule='evenodd'
+                        clip-rule='evenodd'
+                        d='M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8ZM9 9.58579V4C9 3.44772 8.55229 3 8 3C7.44772 3 7 3.44772 7 4V9.58579L4.70711 7.29289C4.31658 6.90237 3.68342 6.90237 3.29289 7.29289C2.90237 7.68342 2.90237 8.31658 3.29289 8.70711L7.29289 12.7071C7.68342 13.0976 8.31658 13.0976 8.70711 12.7071L12.7071 8.70711C13.0976 8.31658 13.0976 7.68342 12.7071 7.29289C12.3166 6.90237 11.6834 6.90237 11.2929 7.29289L9 9.58579Z'
+                        fill='white'
+                      />
+                    </svg>
+                    Download
+                  </div>
+                  <div className='redownload' onClick={reUpdate}>
+                    Re-upload
+                  </div>
                 </div>
-                <div onClick={reUpdate}>Upload</div>
-              </div>
+              )}
             </div>
 
-            <div className='operation-contet-info'>
-              <div>
-                Photo Dimension: 2 inch x 2 inch{' '}
-                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                  <path
-                    d='M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z'
-                    fill='#6FCF97'
-                  />
-                </svg>
+            {isPayed ? (
+              <div className='operation-contet-panel'>
+                <div className='operation-contet-panel-paied'>
+                  <p>
+                    The photo has been sent to your email at
+                    <br />
+                    <span>{paiedInfo?.customer_details?.email}</span> for safekeeping.
+                  </p>
+                  <img src={ICON_PAIED} alt='paied' sizes='' />
+                </div>
               </div>
-              <div>
-                Head Proportion: 1.6 inch{' '}
-                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                  <path
-                    d='M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z'
-                    fill='#6FCF97'
-                  />
-                </svg>
+            ) : (
+              <div className='operation-contet-panel'>
+                <RenderTasg></RenderTasg>
+                <div className='operation-contet-panel-btn'>
+                  <div className='download' onClick={handlerOnOrder}>
+                    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'>
+                      <path
+                        fill-rule='evenodd'
+                        clip-rule='evenodd'
+                        d='M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8ZM9 9.58579V4C9 3.44772 8.55229 3 8 3C7.44772 3 7 3.44772 7 4V9.58579L4.70711 7.29289C4.31658 6.90237 3.68342 6.90237 3.29289 7.29289C2.90237 7.68342 2.90237 8.31658 3.29289 8.70711L7.29289 12.7071C7.68342 13.0976 8.31658 13.0976 8.70711 12.7071L12.7071 8.70711C13.0976 8.31658 13.0976 7.68342 12.7071 7.29289C12.3166 6.90237 11.6834 6.90237 11.2929 7.29289L9 9.58579Z'
+                        fill='white'
+                      />
+                    </svg>
+                    {!isPayed ? 'Download without watermark' : 'Download'}
+                  </div>
+                  <div className='redownload' onClick={reUpdate}>
+                    Re-upload
+                  </div>
+                </div>
+                <RenderTasgWidthPhone></RenderTasgWidthPhone>
               </div>
-              <div>
-                Clear Background: pure white
-                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                  <path
-                    d='M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z'
-                    fill='#6FCF97'
-                  />
-                </svg>
-              </div>
-              <div>
-                High Resolution: 300 DPI{' '}
-                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                  <path
-                    d='M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z'
-                    fill='#6FCF97'
-                  />
-                </svg>
-              </div>
-              <div>
-                Photo Size: 240 KB{' '}
-                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                  <path
-                    d='M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z'
-                    fill='#6FCF97'
-                  />
-                </svg>
-              </div>
-              <div>
-                File Format: PNG{' '}
-                <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                  <path
-                    d='M12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20ZM16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z'
-                    fill='#6FCF97'
-                  />
-                </svg>
-              </div>
-            </div>
+            )}
           </>
         ) : (
           <>
@@ -435,24 +505,180 @@ export default () => {
               <RenderSatus />
             </Upload>
 
+            <div className='operation-contet-split' />
             <div className='operation-contet-info'>
-              {failFalg ? (
-                <div className='fail'>
-                  <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'>
-                    <path
-                      d='M12 2C17.5225 2 22 6.4775 22 12C22 17.5225 17.5225 22 12 22C6.4775 22 2 17.5225 2 12C2 6.4775 6.4775 2 12 2ZM9.19917 8.0675C9.12481 7.99319 9.03654 7.93426 8.9394 7.89407C8.84226 7.85387 8.73816 7.83321 8.63304 7.83325C8.52792 7.83328 8.42383 7.85403 8.32672 7.89429C8.22961 7.93456 8.14139 7.99356 8.06708 8.06792C7.99278 8.14228 7.93384 8.23055 7.89365 8.32768C7.85346 8.42482 7.83279 8.52892 7.83283 8.63404C7.83287 8.73917 7.85361 8.84326 7.89388 8.94036C7.93414 9.03747 7.99314 9.12569 8.0675 9.2L10.8692 12L8.0675 14.8017C7.99319 14.876 7.93425 14.9642 7.89404 15.0613C7.85382 15.1584 7.83312 15.2624 7.83312 15.3675C7.83312 15.4726 7.85382 15.5766 7.89404 15.6737C7.93425 15.7708 7.99319 15.859 8.0675 15.9333C8.14181 16.0076 8.23002 16.0666 8.32711 16.1068C8.42419 16.147 8.52825 16.1677 8.63333 16.1677C8.73842 16.1677 8.84247 16.147 8.93956 16.1068C9.03665 16.0666 9.12486 16.0076 9.19917 15.9333L12 13.1308L14.8008 15.9325C14.8751 16.0068 14.9634 16.0657 15.0604 16.106C15.1575 16.1462 15.2616 16.1669 15.3667 16.1669C15.4718 16.1669 15.5758 16.1462 15.6729 16.106C15.77 16.0657 15.8582 16.0068 15.9325 15.9325C16.0068 15.8582 16.0657 15.77 16.106 15.6729C16.1462 15.5758 16.1669 15.4718 16.1669 15.3667C16.1669 15.2616 16.1462 15.1575 16.106 15.0604C16.0657 14.9634 16.0068 14.8751 15.9325 14.8008L13.1325 12L15.9325 9.19917C16.0068 9.12486 16.0657 9.03665 16.106 8.93956C16.1462 8.84247 16.1669 8.73842 16.1669 8.63333C16.1669 8.52825 16.1462 8.42419 16.106 8.32711C16.0657 8.23002 16.0068 8.14181 15.9325 8.0675C15.8582 7.99319 15.77 7.93425 15.6729 7.89404C15.5758 7.85382 15.4718 7.83312 15.3667 7.83312C15.2616 7.83312 15.1575 7.85382 15.0604 7.89404C14.9634 7.93425 14.8751 7.99319 14.8008 8.0675L12.0008 10.8675L9.19917 8.0675Z'
-                      fill='#EB5757'
-                    />
-                  </svg>
-                  {errInfo}
-                </div>
-              ) : (
+              {!failFalg && (
                 <>
-                  <div>Neutral facial expression.</div>
-                  <div>Frontal Photo.</div>
-                  <div>No Eyeglasses.</div>
-                  <div>No hats or headgear (unless it's for religious reasons)</div>
-                  <div>Everyday clothing.</div>
+                  <div className='item'>
+                    <div className='top'>
+                      <div className='top-l'>
+                        <div className='avator self1' />
+                        <svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22' fill='none'>
+                          <circle cx='11' cy='11' r='11' fill='#DF1B41' />
+                          <line
+                            x1='6.64276'
+                            y1='6.54047'
+                            x2='15.3932'
+                            y2='15.2909'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                          />
+                          <line
+                            x1='6.50568'
+                            y1='15.2909'
+                            x2='15.2561'
+                            y2='6.54043'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                          />
+                        </svg>
+                      </div>
+                      <div className='top-r'>
+                        <div className='avator self' />
+                        <svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22' fill='none'>
+                          <circle cx='11' cy='11' r='11' fill='#00A600' />
+                          <path
+                            d='M5.3512 11.4955L9.92391 16.0682L16.6485 7.72974'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                            stroke-linejoin='round'
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className='bottom'>Neutral facial expression</div>
+                  </div>
+                  <div className='item'>
+                    <div className='top'>
+                      <div className='top-l'>
+                        <div className='avator self2' />
+                        <svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22' fill='none'>
+                          <circle cx='11' cy='11' r='11' fill='#DF1B41' />
+                          <line
+                            x1='6.64276'
+                            y1='6.54047'
+                            x2='15.3932'
+                            y2='15.2909'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                          />
+                          <line
+                            x1='6.50568'
+                            y1='15.2909'
+                            x2='15.2561'
+                            y2='6.54043'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                          />
+                        </svg>
+                      </div>
+                      <div className='top-r'>
+                        <div className='avator self' />
+                        <svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22' fill='none'>
+                          <circle cx='11' cy='11' r='11' fill='#00A600' />
+                          <path
+                            d='M5.3512 11.4955L9.92391 16.0682L16.6485 7.72974'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                            stroke-linejoin='round'
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className='bottom'>Use Frontal Photo</div>
+                  </div>
+                  <div className='item'>
+                    <div className='top'>
+                      <div className='top-l'>
+                        <div className='avator self3' />
+                        <svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22' fill='none'>
+                          <circle cx='11' cy='11' r='11' fill='#DF1B41' />
+                          <line
+                            x1='6.64276'
+                            y1='6.54047'
+                            x2='15.3932'
+                            y2='15.2909'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                          />
+                          <line
+                            x1='6.50568'
+                            y1='15.2909'
+                            x2='15.2561'
+                            y2='6.54043'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                          />
+                        </svg>
+                      </div>
+                      <div className='top-r'>
+                        <div className='avator self' />
+                        <svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22' fill='none'>
+                          <circle cx='11' cy='11' r='11' fill='#00A600' />
+                          <path
+                            d='M5.3512 11.4955L9.92391 16.0682L16.6485 7.72974'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                            stroke-linejoin='round'
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className='bottom'>Only one person is allowed</div>
+                  </div>
+                  <div className='item'>
+                    <div className='top'>
+                      <div className='top-l'>
+                        <div className='avator self4' />
+                        <svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22' fill='none'>
+                          <circle cx='11' cy='11' r='11' fill='#DF1B41' />
+                          <line
+                            x1='6.64276'
+                            y1='6.54047'
+                            x2='15.3932'
+                            y2='15.2909'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                          />
+                          <line
+                            x1='6.50568'
+                            y1='15.2909'
+                            x2='15.2561'
+                            y2='6.54043'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                          />
+                        </svg>
+                      </div>
+                      <div className='top-r'>
+                        <div className='avator self' />
+                        <svg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22' fill='none'>
+                          <circle cx='11' cy='11' r='11' fill='#00A600' />
+                          <path
+                            d='M5.3512 11.4955L9.92391 16.0682L16.6485 7.72974'
+                            stroke='white'
+                            stroke-width='1.82655'
+                            stroke-linecap='round'
+                            stroke-linejoin='round'
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className='bottom'>
+                      Avoid facial decorations such as eyeglasses or hats (unless for religious reasons)
+                    </div>
+                  </div>
                 </>
               )}
             </div>
